@@ -1,80 +1,64 @@
 package org.example;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "product")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pid")
     private Integer pid;
 
     private String name;
-    private int quantity;
+
     private double price;
 
-    // No-arg constructor (required by JPA)
+    private int quantity;
+
     public Product() {
     }
 
-    // Constructor with all fields (except pid if you want)
-    public Product(Integer pid, String name, int quantity, double price) {
+    public Product(Integer pid, String name, double price, int quantity) {
         this.pid = pid;
         this.name = name;
-        this.quantity = quantity;
         this.price = price;
+        this.quantity = quantity;
     }
 
-    // Or constructor without pid if pid is generated
-    public Product(String name, int quantity, double price) {
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-    }
-
+    // Getters and setters
     public Integer getPid() {
         return pid;
     }
+
     public void setPid(Integer pid) {
         this.pid = pid;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+
     public double getPrice() {
         return price;
     }
+
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setPname(String iPhone) {
-        this.name = iPhone;
-    }
-
-    public void setQty(int i) {
-        this.quantity = i;
-    }
-
-    public String getPname() {
-        return name;
-    }
-
-    public int getQty() {
+    public int getQuantity() {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-    // getters and setters...
+    // equals, hashCode, toString if needed
 }

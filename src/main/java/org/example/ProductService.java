@@ -1,52 +1,38 @@
+// src/main/java/org/example/ProductService.java
 package org.example;
 
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
+import java.util.Optional;
 
 @Service
 public class ProductService {
-    Map<Integer, Product> products = new HashMap<>();
+    private final ProductRepository productRepository;
 
-    public ProductService() {
-        // Initializing with some sample products
-        products.put(1, new Product(1, "Laptop", 10, 999.99));
-        products.put(2, new Product(2, "Smartphone", 20, 499.99));
-        products.put(3, new Product(3, "Tablet", 15, 299.99));
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public List<Product> getProducts() {
-        return products.values().stream().toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
-    public Product getProductById(int id) {
-        return products.get(id);
+    public Optional<Product> getProductById(int id) {
+        return productRepository.findById(id);
     }
 
-    public void addProduct(Product product) {
-        products.put(product.getPid(), product);
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
     }
 
-    public void updateProduct(int id, Product product) {
-        if (products.containsKey(id)) {
-            products.put(id, product);
-        }
+    public Optional<Product> updateProduct(int id, Product updatedProduct) {
+        return productRepository.findById(id).map(existing -> {
+            updatedProduct.setPid(id);
+            return productRepository.save(updatedProduct);
+        });
     }
 
     public void deleteProduct(int id) {
-        products.remove(id);
-    }
-
-    public void saveAll(List<Product> products) {
-        for (Product product : products) {
-            this.products.put(product.getPid(), product);
-        }
-    }
-
-    public List<Product> getAll() {
-        return products.values().stream().toList();
+        productRepository.deleteById(id);
     }
 }
